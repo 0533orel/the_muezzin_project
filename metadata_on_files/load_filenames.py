@@ -1,12 +1,12 @@
 import os
-from pathlib import Path
 
+
+# Reminder to add validation and docstring
 
 class LoadFilenames:
     def __init__(self, path: str = None):
         self.path = path or "c:/podcasts/"
         self.filenames = self.get_list_of_filenames(self.path)
-        self.metadata_on_files = None
 
 
     def get_list_of_filenames(self, path: str):
