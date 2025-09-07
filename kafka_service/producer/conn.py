@@ -1,6 +1,6 @@
 import json, time
 from kafka import KafkaProducer
-from .config import Config
+from config import Config
 
 class ProducerConn:
     def __init__(self, cfg: Config):
