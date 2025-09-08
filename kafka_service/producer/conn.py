@@ -1,28 +1,44 @@
 import json
 from kafka import KafkaProducer
 from config.config import Config
+from logs.logger import Logger
+
+logger = Logger.get_logger()
+
 
 class ProducerConn:
     def __init__(self, cfg: Config):
-        self.cfg = cfg
-        self.producer = KafkaProducer(
-            bootstrap_servers=self.cfg.BOOTSTRAP_SERVERS,
-            value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode("utf-8"),
-        )
+        try:
+            self.cfg = cfg
+            self.producer = KafkaProducer(
+                bootstrap_servers=self.cfg.BOOTSTRAP_SERVERS,
+                value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode("utf-8"),
+            )
+            logger.info("ProducerConn successfully initialized")
+        except Exception as e:
+            logger.error(f"error in ProducerConn initialized. error name: {e}")
+
 
     def send(self, value):
-        self.producer.send(self.cfg.TOPIC, value=value)
+        try:
+            self.producer.send(self.cfg.TOPIC, value=value)
+            logger.info("Producer successfully send")
+        except Exception as e:
+            logger.error(f"error in Producer send. error name: {e}")
 
     def flush(self):
         try:
             self.producer.flush(10)
+            logger.info("Producer successfully flush")
         except Exception:
-            pass
+            logger.error(f"error in Producer flush. error name: {e}")
 
     def close(self):
         self.flush()
         try:
             self.producer.close(10)
+            logger.info("Producer successfully close")
         except Exception:
-            pass
+            logger.error(f"error in Producer close. error name: {e}")
+
 

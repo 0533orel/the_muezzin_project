@@ -8,13 +8,13 @@ import gridfs
 
 
 cfg = Config()
+logger = Logger.get_logger()
+
 mngr = ConsumerManager(cfg)
 es = ESdal(cfg)
 mongo = MongoDal(cfg)
+
 fs = gridfs.GridFS(mongo.db)
-
-
-logger = Logger.get_logger()
 hash_object = hashlib.sha256()
 
 try:
@@ -35,9 +35,9 @@ try:
                 file_id = fs.put(f, filename=filename, _id=unique_id)
 
             es.create_one(msg_in_dic, unique_id)
+            es.refresh()
             logger.info(f"Trying to push file {msg_in_dic['file name']} into mongo = succeeded")
         except Exception as e:
-            # pass
             logger.error(f"error name: {e}")
 
 finally:
