@@ -21,9 +21,9 @@ class MetadataOnFiles:
                 "file name": str(file.stem),
                 "type": str(file.suffix),
                 "path": str(file.parent),
-                "size in bytes ": file.stat().st_size,
+                "size in bytes": file.stat().st_size,
                 "creation date": current_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                "Last modified date": datetime.fromtimestamp(last_modified_timestamp).strftime("%Y-%m-%d %H:%M:%S")
+                "last modified date": datetime.fromtimestamp(last_modified_timestamp).strftime("%Y-%m-%d %H:%M:%S")
             })
 
         return list_of_metadata
