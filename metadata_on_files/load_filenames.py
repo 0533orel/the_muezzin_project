@@ -22,7 +22,7 @@ class LoadFilenames:
                 list_of_filenames.append(filename)
             logger.info("LoadFilenames successfully get_list_of_filenames")
             return  list_of_filenames
-        except Exception:
+        except Exception as e:
             logger.error(f"error in LoadFilenames get_list_of_filenames. error name: {e}")
 
 

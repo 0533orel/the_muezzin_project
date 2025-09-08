@@ -20,7 +20,7 @@ class MongoDal:
         try:
             self.col.replace_one({"_id": id}, doc, upsert=True)
             logger.info("MongoDal successfully upsert")
-        except Exception:
+        except Exception as e:
             logger.error(f"error in MongoDal upsert. error name: {e}")
 
 

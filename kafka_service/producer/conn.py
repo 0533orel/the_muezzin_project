@@ -30,7 +30,7 @@ class ProducerConn:
         try:
             self.producer.flush(10)
             logger.info("Producer successfully flush")
-        except Exception:
+        except Exception as e:
             logger.error(f"error in Producer flush. error name: {e}")
 
     def close(self):
@@ -38,7 +38,7 @@ class ProducerConn:
         try:
             self.producer.close(10)
             logger.info("Producer successfully close")
-        except Exception:
+        except Exception as e:
             logger.error(f"error in Producer close. error name: {e}")
 
 
