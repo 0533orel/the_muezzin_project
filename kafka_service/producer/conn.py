@@ -7,25 +7,11 @@ class ProducerConn:
         self.cfg = cfg
         self.producer = KafkaProducer(
             bootstrap_servers=self.cfg.BOOTSTRAP_SERVERS,
-            client_id=self.cfg.CLIENT_ID,
             value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode("utf-8"),
-            linger_ms=5,
-            retries=5,
         )
-        start = time.time()
-        while not self.producer.bootstrap_connected() and time.time() - start < 15:
-            time.sleep(0.2)
 
     def send(self, value, timeout: float = 10.0) -> dict:
-        fut = self.producer.send(self.cfg.TOPIC, value=value)
-        md = fut.get(timeout=timeout)
-
-        return {
-            "topic": md.topic,
-            "partition": md.partition,
-            "offset": md.offset,
-            "timestamp": getattr(md, "timestamp", None),
-        }
+        self.producer.send(self.cfg.TOPIC, value=value)
 
     def flush(self):
         try:

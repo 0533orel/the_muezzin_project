@@ -12,7 +12,7 @@ kafka_pub = ProducerConn(config)
 
 for data in metadata_in_json:
     kafka_pub.send(data)
+    kafka_pub.flush()
 
-kafka_pub.flush()
 kafka_pub.close()
 
