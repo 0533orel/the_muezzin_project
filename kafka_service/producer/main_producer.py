@@ -1,4 +1,4 @@
-from kafka_service.producer.config import Config
+from config.config import Config
 from kafka_service.producer.conn import ProducerConn
 from metadata_on_files.load_filenames import LoadFilenames
 from metadata_on_files.metadata_on_file import MetadataOnFiles

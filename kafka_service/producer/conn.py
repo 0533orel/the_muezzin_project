@@ -1,6 +1,6 @@
-import json, time
+import json
 from kafka import KafkaProducer
-from config import Config
+from config.config import Config
 
 class ProducerConn:
     def __init__(self, cfg: Config):
@@ -10,7 +10,7 @@ class ProducerConn:
             value_serializer=lambda v: json.dumps(v, ensure_ascii=False).encode("utf-8"),
         )
 
-    def send(self, value, timeout: float = 10.0) -> dict:
+    def send(self, value):
         self.producer.send(self.cfg.TOPIC, value=value)
 
     def flush(self):

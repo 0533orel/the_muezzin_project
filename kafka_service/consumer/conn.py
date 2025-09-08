@@ -1,7 +1,7 @@
 import json
 
 from kafka import KafkaConsumer
-from config import Config
+from config.config import Config
 
 
 class ConsumerManager:
