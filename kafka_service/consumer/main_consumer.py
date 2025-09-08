@@ -1,12 +1,19 @@
 from config.config import Config
 from conn import ConsumerManager
 from ESdal.es_dal import ESdal
+from mongo_dal.mongo_dal import MongoDal
 from logs.logger import Logger
 import hashlib, json
+import gridfs
+
 
 cfg = Config()
 mngr = ConsumerManager(cfg)
 es = ESdal(cfg)
+mongo = MongoDal(cfg)
+fs = gridfs.GridFS(mongo.db)
+
+
 logger = Logger.get_logger()
 hash_object = hashlib.sha256()
 
@@ -21,10 +28,16 @@ try:
             hash_object.update(b"{unique_id_str}")
             hex_dig = hash_object.hexdigest()
             unique_id = str(hash_object.hexdigest())
+
+            filename = msg_in_dic['file name'] + msg_in_dic['type']
+            path = msg_in_dic['path']
+            with open(f"{path}/{filename}", "rb") as f:
+                file_id = fs.put(f, filename=filename, _id=unique_id)
+
             es.create_one(msg_in_dic, unique_id)
-            logger.info(f"Trying to push messages {msg_in_dic['file name']} from kafka to elasticsearch = succeeded")
+            logger.info(f"Trying to push file {msg_in_dic['file name']} into mongo = succeeded")
         except Exception as e:
-            pass
+            # pass
             logger.error(f"error name: {e}")
 
 finally:
