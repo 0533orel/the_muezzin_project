@@ -13,3 +13,7 @@ class Config:
 
         self.ES_HOST = os.getenv("ES_HOST", "http://localhost:9200")
         self.ES_INDEX = os.getenv("ES_INDEX", "podcasts")
+
+        self.MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+        self.MONGO_DB = os.getenv("MONGO_DB", "muezzin")
+        self.MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "podcasts")
