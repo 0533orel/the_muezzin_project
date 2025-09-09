@@ -7,11 +7,12 @@ logger = Logger.get_logger()
 
 
 class ConsumerManager:
-    def __init__(self, cfg: Config):
+    def __init__(self, cfg: Config, topic):
         try:
             self.cfg = cfg
+            self.topic = topic
             self.consumer = KafkaConsumer(
-                self.cfg.TOPIC,
+                self.topic,
                 bootstrap_servers=self.cfg.BOOTSTRAP_SERVERS,
                 group_id=self.cfg.GROUP_ID,
                 auto_offset_reset=self.cfg.AUTO_OFFSET,

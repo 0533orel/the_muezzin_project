@@ -3,10 +3,8 @@ import os
 class Config:
     def __init__(self):
         self.BOOTSTRAP_SERVERS: str = os.getenv("BOOTSTRAP_SERVERS", "localhost:9092")
-        self.TOPIC: str = os.getenv("TOPIC", "podcasts")
-
-        self.BOOTSTRAP_SERVERS = os.getenv("BOOTSTRAP_SERVERS", "localhost:9092")
-        self.TOPIC = os.getenv("TOPIC", "podcasts")
+        self.TOPIC_METADATA: str = os.getenv("TOPIC_METADATA", "podcasts_metadata")
+        self.TOPIC_FILEDATA: str = os.getenv("TOPIC_FILEDATA", "podcasts_filedata")
         self.GROUP_ID = os.getenv("GROUP_ID", "es-consumer-group")
         self.AUTO_OFFSET = os.getenv("AUTO_OFFSET", "earliest")
         self.MAX_BUFFER = int(os.getenv("MAX_BUFFER", "500"))
