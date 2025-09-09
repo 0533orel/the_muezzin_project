@@ -19,10 +19,19 @@ class ESdal:
 
 
     def refresh(self) -> None:
-        self.es.indices.refresh(index=self.index)
+        try:
+            self.es.indices.refresh(index=self.index)
+            logger.info("ESdal successfully refresh")
+        except Exception as e:
+            logger.error(f"error in ESdal refresh. error name: {e}")
+
 
     def create_one(self, doc: dict, doc_id: str):
-        self.es.index(index=self.index, id=doc_id, document=doc)
+        try:
+            self.es.index(index=self.index, id=doc_id, document=doc)
+            logger.info("ESdal successfully create_one")
+        except Exception as e:
+            logger.error(f"error in ESdal create_one. error name: {e}")
 
 
 
