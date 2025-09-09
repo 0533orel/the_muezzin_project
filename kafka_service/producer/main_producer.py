@@ -1,17 +1,21 @@
 from config.config import Config
-from kafka_service.producer.conn import ProducerConn
+from kafka_service.producer.pub_conn import ProducerConn
 from metadata_on_files.load_filenames import LoadFilenames
 from metadata_on_files.metadata_on_file import MetadataOnFiles
 
 loader = LoadFilenames()
-metadata = MetadataOnFiles(loader.path, loader.filenames)
+mngr = MetadataOnFiles(loader.path, loader.filenames)
 
-config = Config()
-kafka_pub = ProducerConn(config)
+metadata = mngr.get_metadata_on_files(mngr.path, mngr.filenames)
 
-for data in metadata.metadata_on_files:
-    kafka_pub.send(data)
+cfg = Config()
+kafka_pub = ProducerConn(cfg)
+
+for data in metadata:
+    kafka_pub.send(cfg.TOPIC_METADATA ,data)
     kafka_pub.flush()
+
+
 
 kafka_pub.close()
 
