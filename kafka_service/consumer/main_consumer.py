@@ -1,11 +1,11 @@
 from config.config import Config
-from data_analysis.speach_to_text import SpeachToText
+from data_services.speach_to_text import SpeachToText
 from sub_conn import ConsumerManager
-from elasticsearch_dal.es_dal import EsDal
+from DAL.es_dal import EsDal
 from models.models import Models
-from mongo_dal.mongo_dal import MongoDal
+from DAL.mongo_dal import MongoDal
 from logs.logger import Logger
-from data_analysis.bds_classification import BdsClassification
+from data_services.bds_classification import BdsClassification
 
 
 cfg = Config()
