@@ -1,5 +1,5 @@
 from config.config import Config
-from metadata_on_files.speach_to_text import SpeachToText
+from data_analysis.speach_to_text import SpeachToText
 from sub_conn import ConsumerManager
 from elasticsearch_dal.es_dal import es_dal
 from models.models import Models

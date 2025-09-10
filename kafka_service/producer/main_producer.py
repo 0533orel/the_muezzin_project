@@ -1,7 +1,7 @@
 from config.config import Config
 from kafka_service.producer.pub_conn import ProducerConn
-from metadata_on_files.load_filenames import LoadFilenames
-from metadata_on_files.metadata_on_file import MetadataOnFiles
+from data_analysis.load_filenames import LoadFilenames
+from data_analysis.metadata_on_file import MetadataOnFiles
 
 loader = LoadFilenames()
 mngr = MetadataOnFiles(loader.path, loader.filenames)
