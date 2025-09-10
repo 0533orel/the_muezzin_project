@@ -1,17 +1,17 @@
 from elasticsearch import Elasticsearch, NotFoundError
 from logs.logger import Logger
 
+
 logger = Logger.get_logger()
 
 
-
-class es_dal:
-    def __init__(self, cfg):
+class EsDal:
+    def __init__(self, config):
         try:
-            self.cfg = cfg
+            self.cfg = config
             self.es = Elasticsearch(self.cfg.ES_HOST)
             if not self.es.indices.exists(index=self.cfg.ES_INDEX):
-                self.es.indices.create(index=self.cfg.ES_INDEX)
+                self.es.indices.create(index=self.cfg.ES_INDEX, body=self.cfg.INDEX_BODY)
             self.index = self.cfg.ES_INDEX
             logger.info("elasticsearch_dal successfully initialized")
         except Exception as e:
@@ -26,14 +26,15 @@ class es_dal:
             logger.error(f"error in elasticsearch_dal refresh. error name: {e}")
 
 
-    def create_one(self, doc: dict, doc_id: str):
+    def create_one(self, doc: dict):
         try:
-            self.es.index(index=self.index,
-                          id=doc_id,
-                          document=doc,)
+            self.es.index(index=self.index, document=doc)
             logger.info("elasticsearch_dal successfully create_one")
         except Exception as e:
             logger.error(f"error in elasticsearch_dal create_one. error name: {e}")
+
+    def drop_index(self, name: str):
+        self.es.indices.delete(index=name, ignore=[400, 404])
 
 
 

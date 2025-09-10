@@ -3,8 +3,6 @@ from logs.logger import Logger
 import gridfs
 
 
-
-
 logger = Logger.get_logger()
 
 

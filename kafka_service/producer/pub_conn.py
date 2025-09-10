@@ -1,15 +1,14 @@
 import json
 from kafka import KafkaProducer
-from config.config import Config
 from logs.logger import Logger
 
 logger = Logger.get_logger()
 
 
 class ProducerConn:
-    def __init__(self, cfg: Config):
+    def __init__(self, config):
         try:
-            self.cfg = cfg
+            self.cfg = config
             self.topic_metadata = self.cfg.TOPIC_METADATA
             self.topic_filedata = self.cfg.TOPIC_FILEDATA
             self.producer = KafkaProducer(
@@ -36,4 +35,11 @@ class ProducerConn:
             logger.info("Producer successfully flush")
         except Exception as e:
             logger.error(f"error in Producer flush. error name: {e}")
+
+    def close(self):
+        try:
+            self.producer.close(10)
+            logger.info("Producer successfully close")
+        except Exception as e:
+            logger.error(f"error in Producer close. error name: {e}")
 
