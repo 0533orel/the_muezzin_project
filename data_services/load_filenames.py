@@ -9,7 +9,7 @@ logger = Logger.get_logger()
 class LoadFilenames:
     def __init__(self, path: str = None):
         try:
-            self.path = path or "c:/podcasts/"
+            self.path = path or "/data/input"
             self.filenames = self.get_list_of_filenames(self.path)
             logger.info("LoadFilenames successfully initialized")
         except Exception as e:
