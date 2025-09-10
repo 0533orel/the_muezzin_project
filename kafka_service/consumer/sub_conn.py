@@ -1,15 +1,14 @@
 import json
 from kafka import KafkaConsumer
-from config.config import Config
 from logs.logger import Logger
 
 logger = Logger.get_logger()
 
 
 class ConsumerManager:
-    def __init__(self, cfg: Config, topic):
+    def __init__(self, config, topic):
         try:
-            self.cfg = cfg
+            self.cfg = config
             self.topic = topic
             self.consumer = KafkaConsumer(
                 self.topic,

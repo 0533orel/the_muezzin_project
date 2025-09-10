@@ -25,40 +25,50 @@ class BdsClassification:
         return decoded_string.lower().split(",")
 
     def text_processing(self, text: str):
-        score_text = 0
+        try:
+            score_text = 0
 
 
-        text = text.lower()
-        translator = str.maketrans('', '', string.punctuation)
-        text_without_special_chars = text.translate(translator)
-        list_text = [word for word in text_without_special_chars.split() if word]
+            text = text.lower()
+            translator = str.maketrans('', '', string.punctuation)
+            text_without_special_chars = text.translate(translator)
+            list_text = [word for word in text_without_special_chars.split() if word]
 
-        for i, word in enumerate(list_text):
-            if i + 1 < len(list_text):
-                pair = f"{word} {list_text[i + 1]}"
-                if pair in self.unkind_words:
+            for i, word in enumerate(list_text):
+                if i + 1 < len(list_text):
+                    pair = f"{word} {list_text[i + 1]}"
+                    if pair in self.unkind_words:
+                        score_text += self.score_unkind_words
+                    elif pair in self.less_iniquitous_words:
+                        score_text += self.score_less_iniquitous_words
+
+                if word in self.unkind_words:
                     score_text += self.score_unkind_words
-                elif pair in self.less_iniquitous_words:
+                elif word in self.less_iniquitous_words:
                     score_text += self.score_less_iniquitous_words
 
-            if word in self.unkind_words:
-                score_text += self.score_unkind_words
-            elif word in self.less_iniquitous_words:
-                score_text += self.score_less_iniquitous_words
+            bdf_percent = self.get_bdf_percent(len(list_text), score_text)
+            bds_thread_level = self.get_bds_thread_level(bdf_percent)
+            is_bds = True if bds_thread_level == "high" else False
 
-        bdf_percent = self.get_bdf_percent(len(list_text), score_text)
-        bds_thread_level = self.get_bds_thread_level(bdf_percent)
-        is_bds = True if bds_thread_level == "high" else False
-        dict_of_all_processing = {
-            "bdf_percent": bdf_percent,
-            "bds_thread_level": bds_thread_level,
-            "is_bds": is_bds
-        }
-        return dict_of_all_processing
+            dict_of_all_processing = {
+                "len text": len(list_text),
+                "bds score": score_text,
+                "bdf percent": bdf_percent,
+                "bds thread level": bds_thread_level,
+                "is bds": is_bds
+            }
+
+            logger.info("BdsClassification successfully text_processing")
+            return dict_of_all_processing
+        except Exception as e:
+            logger.error(f"error in BdsClassification text_processing. error name: {e}")
+
+
 
 
     def get_bdf_percent(self, len_text, score_text):
-        return score_text / len_text * 100
+        return round(score_text / len_text * 100, 2)
 
 
     def get_bds_thread_level(self, bdf_percent):
@@ -68,17 +78,3 @@ class BdsClassification:
             return "medium"
         else:
             return "high"
-
-
-
-
-
-
-
-
-a = BdsClassification()
-print(a.unkind_words)
-print(a.less_iniquitous_words)
-print(a.text_processing("war"))
-
-
